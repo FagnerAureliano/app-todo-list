@@ -8,22 +8,12 @@ import { Tasks } from "../../components/Tasks";
 import { useState } from "react";
 
 export function Home() {
-  const [tasks, setTasks] = useState<string[]>([
-    // "1",
-    // "2",
-    // "3",
-    // "4",
-    // "5",
-    // "6",
-    // "7",
-    // "8",
-    // "9",
-    // "10",
-    // "11",
-    // "12",
-  ]);
-  function handleParticipantRemove(test: any) {
-    console.log("test", test);
+  const [tasks, setTasks] = useState<string[]>([]);
+  function handleAddTask(test: any) {
+    setTasks([...tasks, test]);
+  }
+  function handleTaskRemove(test: any) {
+    setTasks(tasks.filter((item) => item !== test));
   }
 
   return (
@@ -35,7 +25,7 @@ export function Home() {
         />
       </View>
       <View style={styles.containerBotton}>
-        <InputField submitText={handleParticipantRemove} />
+        <InputField submitText={handleAddTask} />
         <View style={styles.contadores}>
           <Counters count={tasks.length} text="Criadas" wordColor="#4EA8DE" />
           <Counters count={0} text="Concluídas" wordColor="#8284FA" />
@@ -47,7 +37,7 @@ export function Home() {
             data={tasks}
             keyExtractor={(item) => item}
             renderItem={({ item }) => (
-              <Tasks taskName={item} onRemove={handleParticipantRemove} />
+              <Tasks taskName={item} onRemove={handleTaskRemove} />
             )}
             ListEmptyComponent={() => (
               <View style={styles.viewEmpty}>

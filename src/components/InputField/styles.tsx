@@ -14,7 +14,8 @@ export const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     padding: 16, 
-    borderEndColor: "#FFF",
+    borderColor: "#000",
+ 
   },
   button: {
     height: 52,
