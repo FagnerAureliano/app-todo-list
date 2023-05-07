@@ -6,7 +6,7 @@ type Props = {
   count: number;
   wordColor: string;
 };
-export function Contador({ text, count, wordColor }: Props) {
+export function Counters({ text, count, wordColor }: Props) {
   return (
     <>
       <View style={styles.container}>

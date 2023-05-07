@@ -21,6 +21,10 @@ export const styles = StyleSheet.create({
         width: "80%",
         alignSelf: "center",
     },
+    viewEmpty: {
+        alignItems: "center",
+        marginTop: 30
+    },
     emptyList: {
         top: "5%",
         justifyContent: "center",
@@ -38,6 +42,6 @@ export const styles = StyleSheet.create({
     },
     emptyListTextTwo: {
         fontSize: 14,
-        color: "#808080"
+        color: "#808080",
     }
 });
