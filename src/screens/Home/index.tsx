@@ -1,21 +1,53 @@
-import { FlatList, Text, View } from "react-native";
+import { Alert, FlatList, Text, View } from "react-native";
 import { Image } from "expo-image";
 import { styles } from "./styles";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { InputField } from "../../components/InputField";
 import { Counters } from "../../components/Counters";
-import { Tasks } from "../../components/Tasks";
-import { useState } from "react";
+import { TaskProps, Tasks } from "../../components/Tasks";
+import { useEffect, useState } from "react";
 
 export function Home() {
-  const [tasks, setTasks] = useState<string[]>([]);
-  function handleAddTask(test: any) {
-    setTasks([...tasks, test]);
-  }
-  function handleTaskRemove(test: any) {
-    setTasks(tasks.filter((item) => item !== test));
+  const [tasks, setTasks] = useState<TaskProps[]>([]);
+  const [countTasksDone, setCountTasksDone] = useState<number>(0);
+
+  function handleAddTask(newTask: TaskProps) {
+    const { name } = newTask;
+    const existingTask = tasks.some((task) => task.name === name);
+    if (existingTask) {
+      return Alert.alert(
+        `Tarefa: ${name}`,
+        "Já existe uma tarefa na lista com este nome."
+      );
+    }
+    setTasks((prevTasks) => [...prevTasks, newTask]);
   }
 
+  function handleTaskRemove(task: TaskProps) {
+    const { name } = task;
+    const removeConfirmationMessage = `Remover a tarefa: ${name}?`;
+    return Alert.alert("Remover", removeConfirmationMessage, [
+      {
+        text: "OK",
+        onPress: () => {
+          setTasks((prevTasks) =>
+            prevTasks.filter((item) => item.name !== name)
+          );
+        },
+      },
+      {
+        text: "Cancelar",
+        style: "cancel",
+      },
+    ]);
+  }
+  function updateTasks(prevTasks: TaskProps) {
+    const taskFound = tasks.findIndex((t) => t.name === prevTasks.name);
+    tasks[taskFound] = prevTasks;
+    const isDone = tasks.filter((t) => t.isDone === true);
+    setTasks(tasks);
+    setCountTasksDone(isDone.length);
+  }
   return (
     <View style={styles.containerTop}>
       <View style={styles.containerTop}>
@@ -25,19 +57,27 @@ export function Home() {
         />
       </View>
       <View style={styles.containerBotton}>
-        <InputField submitText={handleAddTask} />
+        <InputField submitTask={handleAddTask} />
         <View style={styles.contadores}>
           <Counters count={tasks.length} text="Criadas" wordColor="#4EA8DE" />
-          <Counters count={0} text="Concluídas" wordColor="#8284FA" />
+          <Counters
+            count={countTasksDone}
+            text="Concluídas"
+            wordColor="#8284FA"
+          />
         </View>
         <View style={styles.emptyList}>
           <FlatList
             style={{ width: "100%" }}
             showsVerticalScrollIndicator={false}
             data={tasks}
-            keyExtractor={(item) => item}
+            keyExtractor={(item) => item.name}
             renderItem={({ item }) => (
-              <Tasks taskName={item} onRemove={handleTaskRemove} />
+              <Tasks
+                task={item}
+                onCheck={updateTasks}
+                onRemove={handleTaskRemove}
+              />
             )}
             ListEmptyComponent={() => (
               <View style={styles.viewEmpty}>

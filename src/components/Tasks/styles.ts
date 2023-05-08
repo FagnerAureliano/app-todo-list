@@ -3,11 +3,12 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   container: {
     width: "100%",
-    backgroundColor: "#1F1E25",
-    borderRadius: 5,
+    backgroundColor: "#333333",
+    borderRadius: 8,
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 10
+    marginBottom: 10,
+    paddingLeft:12,
   },
   name: {
     flex: 1,
@@ -23,7 +24,7 @@ export const styles = StyleSheet.create({
   button: {
     width: 56,
     height: 56,
-    backgroundColor: "#1F1E25",
+    backgroundColor: "#333333",
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",

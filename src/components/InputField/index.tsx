@@ -2,15 +2,19 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useState } from "react";
+import { TaskProps } from "../Tasks";
 
 type Props = {
-  submitText(value: string): void;
+  submitTask(value: TaskProps): void;
 };
-export function InputField({ submitText }: Props) {
+export function InputField({ submitTask }: Props) {
   const [isFocused, setIsFocused] = useState(false);
   const [text, setText] = useState("");
   function handleSubmit() {
-    submitText(text);
+    submitTask({
+      name: text,
+      isDone: false,
+    });
     setText("");
   }
 
